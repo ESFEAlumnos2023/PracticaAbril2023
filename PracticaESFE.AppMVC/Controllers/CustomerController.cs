@@ -11,24 +11,17 @@ namespace PracticaESFE.AppMVC.Controllers
         public ActionResult Index()
         {
             var list = new List<Customer>();
-            const string strConnectio = @"Data Source=.;Initial Catalog=OrdenesDB;Integrated Security=True";
-            using (var conn = new SqlConnection(strConnectio))
+            string query = "SELECT Id,Name,Addres FROM Customers";
+            Conexion.ExecuteReader(query, reader =>
             {
-                conn.Open();
-                string query = "SELECT Id,Name,Addres FROM Customers";
-                var sqlcommand = new SqlCommand(query, conn);
-                var sqlReader = sqlcommand.ExecuteReader();
-                while (sqlReader.Read())
+                list.Add(new Customer
                 {
-                    list.Add(new Customer
-                    {
-                        
-                        Id = sqlReader.GetInt32(0),
-                        Name = sqlReader.GetString(1),
-                        Addres = sqlReader.GetString(2),
-                    });
-                }
-            }
+                    Id = reader.GetInt32(0),
+                    Name = reader.GetString(1),
+                    Addres = reader.GetString(2),
+
+                });
+            });           
             return View(list);
         }
 
@@ -52,19 +45,13 @@ namespace PracticaESFE.AppMVC.Controllers
             try
             {
                 int result = 0;
-                const string strConnectio = @"Data Source=.;Initial Catalog=OrdenesDB;Integrated Security=True";
-                using (var conn = new SqlConnection(strConnectio))
-                {
-                    conn.Open(); // conexion
-                    string query = "INSERT INTO Customers(Name,Addres) VALUES(@Name,@Addres)";
-                    var sqlcommand = new SqlCommand(query, conn);
-                    sqlcommand.Parameters
+                string query = "INSERT INTO Customers(Name,Addres) VALUES(@Name,@Addres)";
+                result = Conexion.ExecuteCommand(query, command => {
+                    command.Parameters
                         .AddWithValue("Name", customer.Name);
-                    sqlcommand.Parameters
-                       .AddWithValue("Addres", customer.Addres);                   
-                    result = sqlcommand.ExecuteNonQuery();
-
-                }
+                    command.Parameters
+                       .AddWithValue("Addres", customer.Addres);
+                });               
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else

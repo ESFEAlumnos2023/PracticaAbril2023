@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PracticaESFE.AppMVC.Models;
-using System.Data.SqlClient;
 
 namespace PracticaESFE.AppMVC.Controllers
 {
@@ -11,24 +10,18 @@ namespace PracticaESFE.AppMVC.Controllers
         public ActionResult Index()
         {
             var list = new List<User>();
-            const string strConnectio = @"Data Source=.;Initial Catalog=OrdenesDB;Integrated Security=True";
-            using (var conn= new SqlConnection(strConnectio))
+            string query = "SELECT Id,Name,Email,[Password] FROM [User]";
+            Conexion.ExecuteReader(query, reader =>
             {
-                conn.Open();
-                string query = "SELECT Id,Name,Email,[Password] FROM [User]";
-                var sqlcommand = new SqlCommand(query,conn);
-                var sqlReader = sqlcommand.ExecuteReader();
-                while (sqlReader.Read())
+                list.Add(new User
                 {
-                    list.Add(new User {
-                     Id = sqlReader.GetInt32(0),
-                     Name = sqlReader.GetString(1),
-                     Email = sqlReader.GetString(2),
-                     Password = sqlReader.GetString(3),
-                     
-                    });
-                }
-            }
+                    Id = reader.GetInt32(0),
+                    Name = reader.GetString(1),
+                    Email = reader.GetString(2),
+                    Password = reader.GetString(3),
+
+                });
+            });           
             return View(list);
         }
 
@@ -52,21 +45,16 @@ namespace PracticaESFE.AppMVC.Controllers
             try
             {
                 int result = 0;
-                const string strConnectio = @"Data Source=.;Initial Catalog=OrdenesDB;Integrated Security=True";
-                using (var conn = new SqlConnection(strConnectio))
+                string query = "INSERT INTO [User](Name,Email,[Password]) VALUES(@Name,@Email,@Password)";              
+                result = Conexion.ExecuteCommand(query, command =>
                 {
-                    conn.Open();
-                    string query = "INSERT INTO [User](Name,Email,[Password]) VALUES(@Name,@Email,@Password)";
-                    var sqlcommand = new SqlCommand(query, conn);
-                    sqlcommand.Parameters
+                    command.Parameters
                         .AddWithValue("Name", user.Name);
-                    sqlcommand.Parameters
+                    command.Parameters
                        .AddWithValue("Email", user.Email);
-                    sqlcommand.Parameters
+                    command.Parameters
                        .AddWithValue("Password", user.Password);
-                     result = sqlcommand.ExecuteNonQuery();
-                   
-                }
+                });              
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else
