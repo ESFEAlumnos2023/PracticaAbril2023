@@ -55,7 +55,7 @@ namespace PracticaESFE.AppMVC.Controllers
                 const string strConnectio = @"Data Source=.;Initial Catalog=OrdenesDB;Integrated Security=True";
                 using (var conn = new SqlConnection(strConnectio))
                 {
-                    conn.Open();
+                    conn.Open(); // conexion
                     string query = "INSERT INTO Customers(Name,Addres) VALUES(@Name,@Addres)";
                     var sqlcommand = new SqlCommand(query, conn);
                     sqlcommand.Parameters
