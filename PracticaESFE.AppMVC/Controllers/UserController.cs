@@ -9,19 +9,7 @@ namespace PracticaESFE.AppMVC.Controllers
         // GET: UserController
         public ActionResult Index()
         {
-            var list = new List<User>();
-            string query = "SELECT Id,Name,Email,[Password] FROM [User]";
-            Conexion.ExecuteReader(query, reader =>
-            {
-                list.Add(new User
-                {
-                    Id = reader.GetInt32(0),
-                    Name = reader.GetString(1),
-                    Email = reader.GetString(2),
-                    Password = reader.GetString(3),
-
-                });
-            });           
+            var list = UserDAL.GetAll();       
             return View(list);
         }
 
@@ -44,17 +32,7 @@ namespace PracticaESFE.AppMVC.Controllers
         {
             try
             {
-                int result = 0;
-                string query = "INSERT INTO [User](Name,Email,[Password]) VALUES(@Name,@Email,@Password)";              
-                result = Conexion.ExecuteCommand(query, command =>
-                {
-                    command.Parameters
-                        .AddWithValue("Name", user.Name);
-                    command.Parameters
-                       .AddWithValue("Email", user.Email);
-                    command.Parameters
-                       .AddWithValue("Password", user.Password);
-                });              
+                int result = UserDAL.Create(user);   
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else

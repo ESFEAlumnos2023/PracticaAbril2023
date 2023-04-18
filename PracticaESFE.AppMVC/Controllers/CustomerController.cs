@@ -10,18 +10,7 @@ namespace PracticaESFE.AppMVC.Controllers
         // GET: CustomerController
         public ActionResult Index()
         {
-            var list = new List<Customer>();
-            string query = "SELECT Id,Name,Addres FROM Customers";
-            Conexion.ExecuteReader(query, reader =>
-            {
-                list.Add(new Customer
-                {
-                    Id = reader.GetInt32(0),
-                    Name = reader.GetString(1),
-                    Addres = reader.GetString(2),
-
-                });
-            });           
+            var list = CustomerDAL.GetAll();  
             return View(list);
         }
 
@@ -44,14 +33,7 @@ namespace PracticaESFE.AppMVC.Controllers
         {
             try
             {
-                int result = 0;
-                string query = "INSERT INTO Customers(Name,Addres) VALUES(@Name,@Addres)";
-                result = Conexion.ExecuteCommand(query, command => {
-                    command.Parameters
-                        .AddWithValue("Name", customer.Name);
-                    command.Parameters
-                       .AddWithValue("Addres", customer.Addres);
-                });               
+                int result = CustomerDAL.Create(customer);                            
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else
