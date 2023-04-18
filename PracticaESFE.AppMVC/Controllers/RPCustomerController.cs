@@ -9,7 +9,7 @@ namespace PracticaESFE.AppMVC.Controllers
         // GET: RPCustomerController
         public ActionResult Index()
         {
-            var list = CustomerDAL.GetAll();           
+            var list = CustomerEFDAL.GetAll();           
             return View(list);
         }
 

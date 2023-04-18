@@ -10,7 +10,7 @@ namespace PracticaESFE.AppMVC.Controllers
         // GET: CustomerController
         public ActionResult Index()
         {
-            var list = CustomerDAL.GetAll();  
+            var list = CustomerEFDAL.GetAll();  
             return View(list);
         }
 
@@ -33,7 +33,7 @@ namespace PracticaESFE.AppMVC.Controllers
         {
             try
             {
-                int result = CustomerDAL.Create(customer);                            
+                int result = CustomerEFDAL.Create(customer);                            
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else

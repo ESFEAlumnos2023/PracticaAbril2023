@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Xml;
-
 namespace PracticaESFE.AppMVC.Models
 {
     public class Conexion
@@ -53,6 +52,6 @@ namespace PracticaESFE.AppMVC.Models
                     reader(sqlReader);
                 }
             }
-        }
+        }       
     }
 }
