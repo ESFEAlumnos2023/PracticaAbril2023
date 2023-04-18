@@ -2,20 +2,19 @@
 {
     public class CustomerEFDAL
     {
-        public static List<Customer> GetAll()
-        {           
-           using(var context=new ESFEDB())
-            {
-                return context.Customers.ToList();
-            }
-        }
-        public static int Create(Customer customer)
+        readonly ESFEDB _context;
+        public CustomerEFDAL(ESFEDB context)
         {
-            using (var context = new ESFEDB())
-            {
-                context.Customers.Add(customer);
-                return context.SaveChanges();
-            }
+            _context = context;
+        }
+        public  List<Customer> GetAll()
+        {
+            return _context.Customers.ToList();
+        }
+        public  int Create(Customer customer)
+        {
+            _context.Customers.Add(customer);
+            return _context.SaveChanges();
         }
     }
 }

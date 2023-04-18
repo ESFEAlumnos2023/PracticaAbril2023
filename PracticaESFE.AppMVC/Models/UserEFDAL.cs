@@ -2,20 +2,19 @@
 {
     public class UserEFDAL
     {
-        public static List<User> GetAll()
+        readonly ESFEDB _context;
+        public UserEFDAL(ESFEDB context)
         {
-            using (var context = new ESFEDB())
-            {
-                return context.User.ToList();
-            }
+            _context = context;
         }
-        public static int Create(User user)
+        public  List<User> GetAll()
         {
-            using (var context = new ESFEDB())
-            {
-                context.Add(user);
-                return context.SaveChanges();
-            }
+            return _context.User.ToList();
+        }
+        public  int Create(User user)
+        {
+            _context.Add(user);
+            return _context.SaveChanges();
         }
     }
 }

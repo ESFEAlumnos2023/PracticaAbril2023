@@ -7,9 +7,14 @@ namespace PracticaESFE.AppMVC.Controllers
     public class UserController : Controller
     {
         // GET: UserController
+        readonly UserEFDAL userDAL;
+        public UserController(UserEFDAL userEFDAL)
+        {
+            userDAL = userEFDAL;
+        }
         public ActionResult Index()
         {
-            var list = UserEFDAL.GetAll();       
+            var list = userDAL.GetAll();       
             return View(list);
         }
 
@@ -32,7 +37,7 @@ namespace PracticaESFE.AppMVC.Controllers
         {
             try
             {
-                int result = UserEFDAL.Create(user);   
+                int result = userDAL.Create(user);   
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else
