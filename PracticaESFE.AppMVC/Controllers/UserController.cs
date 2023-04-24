@@ -7,14 +7,14 @@ namespace PracticaESFE.AppMVC.Controllers
     public class UserController : Controller
     {
         // GET: UserController
-        readonly UserEFDAL userDAL;
-        public UserController(UserEFDAL userEFDAL)
+        readonly IUser userDAL;
+        public UserController(IUser pUserDAL)
         {
-            userDAL = userEFDAL;
+            userDAL = pUserDAL;
         }
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var list = userDAL.GetAll();       
+            var list =await userDAL.GetAll();       
             return View(list);
         }
 
@@ -33,11 +33,11 @@ namespace PracticaESFE.AppMVC.Controllers
         // POST: UserController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(User user)
+        public async Task<ActionResult> Create(User user)
         {
             try
             {
-                int result = userDAL.Create(user);   
+                int result =await userDAL.Create(user);   
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else

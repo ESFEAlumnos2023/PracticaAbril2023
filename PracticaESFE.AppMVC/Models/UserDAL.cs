@@ -1,12 +1,12 @@
 ﻿namespace PracticaESFE.AppMVC.Models
 {
-    public class UserDAL
+    public class UserDAL:IUser
     {
-        public static List<User> GetAll()
+        public async  Task<List<User>> GetAll()
         {
             var list = new List<User>();
             string query = "SELECT Id,Name,Email,[Password] FROM [User]";
-            Conexion.ExecuteReader(query, reader =>
+          await  Conexion.ExecuteReaderAsync(query, reader =>
             {
                 list.Add(new User
                 {
@@ -19,11 +19,11 @@
             });
             return list;
         }
-        public static int Create(User user)
+        public async Task<int> Create(User user)
         {
             int result = 0;
             string query = "INSERT INTO [User](Name,Email,[Password]) VALUES(@Name,@Email,@Password)";
-            result = Conexion.ExecuteCommand(query, command =>
+            result = await Conexion.ExecuteCommandASync(query, command =>
             {
                 command.Parameters
                     .AddWithValue("Name", user.Name);

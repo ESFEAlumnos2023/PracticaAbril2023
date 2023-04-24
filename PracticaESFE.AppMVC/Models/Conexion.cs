@@ -26,6 +26,26 @@ namespace PracticaESFE.AppMVC.Models
            
             return result;
         }
+        public static async Task<int> ExecuteCommandASync(string query, Action<SqlCommand> pExeCommand)
+        {
+            int result = 0;
+            try
+            {
+                using (var conn = new SqlConnection(strConnection))
+                {
+                  await  conn.OpenAsync(); // conexion
+                    var sqlcommand = new SqlCommand(query, conn);
+                    pExeCommand(sqlcommand);
+                    return await sqlcommand.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = 0;
+            }
+
+            return result;
+        }
         public static void ExecuteReader(string query, Action<SqlCommand> exeCommand, Action<SqlDataReader> reader)
         {           
             using (var conn = new SqlConnection(strConnection))
@@ -52,6 +72,19 @@ namespace PracticaESFE.AppMVC.Models
                     reader(sqlReader);
                 }
             }
-        }       
+        }
+        public static async Task ExecuteReaderAsync(string query, Action<SqlDataReader> reader)
+        {
+            using (var conn = new SqlConnection(strConnection))
+            {
+              await  conn.OpenAsync(); // conexion
+                var sqlcommand = new SqlCommand(query, conn);
+                var sqlReader =await sqlcommand.ExecuteReaderAsync();
+                while (sqlReader.Read())
+                {
+                    reader(sqlReader);
+                }
+            }
+        }
     }
 }

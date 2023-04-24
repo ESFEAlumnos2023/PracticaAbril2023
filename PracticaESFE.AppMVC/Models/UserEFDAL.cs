@@ -1,20 +1,27 @@
-﻿namespace PracticaESFE.AppMVC.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace PracticaESFE.AppMVC.Models
 {
-    public class UserEFDAL
-    {
+    public class UserEFDAL : IUser
+    {    
         readonly ESFEDB _context;
         public UserEFDAL(ESFEDB context)
         {
             _context = context;
         }
-        public  List<User> GetAll()
+        public async  Task<List<User>> GetAll()
         {
-            return _context.User.ToList();
+            return await _context.User.ToListAsync();
         }
-        public  int Create(User user)
+        public  async Task<int> Create(User user)
         {
             _context.Add(user);
-            return _context.SaveChanges();
+            return await _context.SaveChangesAsync();
+        }
+        public void xCosa()
+        {
+            UserDAL userDAL=new UserDAL();           
+           // userDAL.
         }
     }
 }
