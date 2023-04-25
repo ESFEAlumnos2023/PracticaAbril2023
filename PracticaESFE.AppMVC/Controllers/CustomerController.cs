@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PracticaESFE.AppMVC.Models;
-using System.Data.SqlClient;
+using PracticaESFE.AppMVC.Models.Entity;
+using PracticaESFE.AppMVC.Models.Logic.Intefaces;
 
 namespace PracticaESFE.AppMVC.Controllers
 {
     public class CustomerController : Controller
     {
-        readonly CustomerEFDAL customerDAL;
-        public CustomerController(CustomerEFDAL customerEFDAL)
+        readonly ICustomer customerDAL;
+        public CustomerController(ICustomer iCustomer)
         {
-            customerDAL = customerEFDAL;
+            customerDAL = iCustomer;
         }
         // GET: CustomerController
-        public ActionResult Index()
+        public async  Task<ActionResult> Index()
         {
-            var list = customerDAL.GetAll();  
+            var list = await customerDAL.GetAll();  
             return View(list);
         }
 
@@ -34,11 +34,11 @@ namespace PracticaESFE.AppMVC.Controllers
         // POST: CustomerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Customer customer)
+        public async Task<ActionResult> Create(Customer customer)
         {
             try
             {
-                int result = customerDAL.Create(customer);                            
+                int result =await customerDAL.Create(customer);                            
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else

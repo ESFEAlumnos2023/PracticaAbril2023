@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PracticaESFE.AppMVC.Models;
+using PracticaESFE.AppMVC.Models.DAL.EF;
+using PracticaESFE.AppMVC.Models.Logic.Intefaces;
 
 namespace PracticaESFE.AppMVC.Controllers
 {
     public class RPCustomerController : Controller
     {
         // GET: RPCustomerController
-        readonly CustomerEFDAL customerDAL;
-        public RPCustomerController(CustomerEFDAL customerEFDAL)
+        readonly ICustomer customerDAL;
+        public RPCustomerController(ICustomer Icustomer)
         {
-            customerDAL = customerEFDAL;
+            customerDAL = Icustomer;
         }
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var list = customerDAL.GetAll();           
+            var list =await customerDAL.GetAll();           
             return View(list);
         }
 

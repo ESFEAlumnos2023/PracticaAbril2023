@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PracticaESFE.AppMVC.Models;
+using EntidadesNegocio;
+using PracticaESFE.AppMVC.Models.Logic.Intefaces;
 
 namespace PracticaESFE.AppMVC.Controllers
 {
