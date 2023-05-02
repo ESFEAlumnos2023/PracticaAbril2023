@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PracticaESFE.AppMVC.Models;
 using System.Diagnostics;
 
 namespace PracticaESFE.AppMVC.Controllers

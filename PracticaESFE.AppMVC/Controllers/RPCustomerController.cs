@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PracticaESFE.AppMVC.Models.DAL.EF;
-using PracticaESFE.AppMVC.Models.Logic.Intefaces;
-
+using LogicaNegocio;
 namespace PracticaESFE.AppMVC.Controllers
 {
     public class RPCustomerController : Controller

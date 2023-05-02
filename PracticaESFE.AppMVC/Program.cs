@@ -1,6 +1,4 @@
-using PracticaESFE.AppMVC.Models;
-using System.Configuration;
-using Microsoft.EntityFrameworkCore;
+using IoC;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
